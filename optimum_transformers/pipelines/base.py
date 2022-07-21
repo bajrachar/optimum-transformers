@@ -45,8 +45,11 @@ def create_model_for_providers(model_path: str) -> InferenceSession:
     options.intra_op_num_threads = 1
     options.graph_optimization_level = GraphOptimizationLevel.ORT_ENABLE_ALL
 
+    # prefer CUDA over CPU execution provider
+    EP_list = ['CUDAExecutionProvider', 'CPUExecutionProvider']
+
     # Load the model as a graph and prepare the CPU backend
-    session = InferenceSession(str(model_path), options)
+    session = InferenceSession(str(model_path), options, providers=EP_List)
     session.disable_fallback()
 
     return session
